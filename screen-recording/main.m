@@ -87,14 +87,29 @@ NSDictionary* findWindowBoundsAndPid(NSString* ownerName) {
     return @{ @"found" : @NO };
 }
 
+NSDictionary* findWithRetry(NSString* ownerName) {
+    NSDictionary* result;
+    for (int i = 0; i < 10; i++) {
+        result = findWindowBoundsAndPid(ownerName);
+
+        // return if we've found a match, otherwise try again in a second.
+        if ([[result objectForKey:@"found"] intValue]) {
+            break;
+        }
+        [NSThread sleepForTimeInterval:1.0f];
+    }
+
+    return result;
+}
+
 // Locate iOS Window and return found, pid, bounds, and displayID.
 NSDictionary* findiOSWindowBoundsAndPid() {
-    return findWindowBoundsAndPid(@"iOS Simulator");
+    return findWithRetry(@"iOS Simulator");
 }
 
 // Locate Android Window and return found, pid, bounds, and displayID.
 NSDictionary* findAndroidWindowBoundsAndPid() {
-    return findWindowBoundsAndPid(@"emulator64-x86");
+    return findWithRetry(@"emulator64-x86");
 }
 
 // Deletes the file. Errors if the file is a directory or deletion fails.
@@ -165,7 +180,7 @@ void run(NSString* os, NSString* path) {
     Log(@"found: %i = %@", found, found ? @"Yes" : @"No");
 
     if (!found) {
-        logAndExit(@"iOS window not found.");
+        logAndExit(@"%@ window not found.", os);
     } else {
         Log(@"Found is true!");
     }
@@ -212,7 +227,7 @@ void run(NSString* os, NSString* path) {
     [movie startRecordingToOutputFileURL:pathURL recordingDelegate:delegate];
     
     // Only print recording once we've started to record.
-    NSLog(@"screen-recording started. Saving %@ to %@", os, path);
+    NSLog(@":: Recording %@ to %@", os, path);
 
     while (true) {
       [NSThread sleepForTimeInterval:10.0f];
