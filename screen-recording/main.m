@@ -142,7 +142,6 @@ void run(NSString* os, NSString* path) {
     #ifdef DEBUG
         NSLog(@"DEBUG mode enabled.");
     #endif
-    NSLog(@"Recording %@ to %@", os, path);
     deleteFile(path);
 
     NSDictionary* targetWindow;
@@ -212,6 +211,9 @@ void run(NSString* os, NSString* path) {
 
     [movie startRecordingToOutputFileURL:pathURL recordingDelegate:delegate];
     
+    // Only print recording once we've started to record.
+    NSLog(@"screen-recording started. Saving %@ to %@", os, path);
+
     while (true) {
       [NSThread sleepForTimeInterval:10.0f];
     }
