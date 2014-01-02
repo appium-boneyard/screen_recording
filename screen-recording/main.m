@@ -68,8 +68,8 @@ NSDictionary* findWindowBoundsAndPid(NSString* ownerName) {
     NSArray *windowList = objc_retainedObject(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID));
     CGRect windowRect;
     for (NSDictionary *info in windowList) {
-        if ([[info objectForKey:(NSString *)kCGWindowOwnerName] isEqualToString:ownerName] && ![[info objectForKey:(NSString *)kCGWindowName] isEqualToString:@""]) {
-
+        if ([[info objectForKey:(NSString *)kCGWindowOwnerName] isEqualToString:ownerName] &&
+            ![[info objectForKey:(NSString *)kCGWindowName] isEqualToString:@""]) {
             NSNumber* pid = [info objectForKey:(id)kCGWindowOwnerPID];
 
             windowID = [[info objectForKey:(NSString *)kCGWindowNumber] unsignedIntValue];
@@ -105,7 +105,6 @@ void deleteFile(NSString* file) {
     // Ensure file exists and isn't a directory before attempting removal.
     // isDeletableFileAtPath will return true even when the file doesn't exist.
     if ([manager fileExistsAtPath:file isDirectory:&isDirectory]) {
-
         if (isDirectory) { logAndExit(@"File must not be a directory. %@", file); }
         NSError* error;
         if (![manager removeItemAtPath:file error:&error]) {
