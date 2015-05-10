@@ -56,6 +56,8 @@ void printOwners() {
     }
 }
 
+extern void CGSInitialize(void);
+
 // Locate window by owner name and return found, pid, bounds, and displayID.
 //   found     - (NSNumber) 1 if we've found the window, 0 otherwise.
 //   pid       - (NSNumber) the process id
@@ -71,7 +73,7 @@ NSDictionary* findWindowBoundsAndPid(NSString* ownerName) {
         if ([[info objectForKey:(NSString *)kCGWindowOwnerName] isEqualToString:ownerName] &&
             ![[info objectForKey:(NSString *)kCGWindowName] isEqualToString:@""]) {
             NSNumber* pid = [info objectForKey:(id)kCGWindowOwnerPID];
-
+            CGSInitialize();
             windowID = [[info objectForKey:(NSString *)kCGWindowNumber] unsignedIntValue];
             CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)objc_unretainedPointer([info objectForKey:(NSString *)kCGWindowBounds]), &windowRect);
             CGGetDisplaysWithRect(windowRect, 1, &displayID, NULL);
