@@ -1,4 +1,4 @@
-Note: This project is no longer maintained.
+Note: This project is no longer maintained. [androidtool-mac](https://github.com/mortenjust/androidtool-mac) is able to record Android/iOS devices.
 
 --
 
