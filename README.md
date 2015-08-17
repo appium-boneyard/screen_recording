@@ -1,4 +1,4 @@
-Note: This project is no longer maintained. Checkout [androidtool-mac](https://github.com/mortenjust/androidtool-mac) instead.
+Note: This project is no longer maintained. There's a [call for maintainers](https://github.com/appium/screen_recording/issues/7).
 
 --
 
